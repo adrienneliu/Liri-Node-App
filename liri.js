@@ -5,11 +5,16 @@ var keys = require("./keys.js");
 //spotify api in node
 var Spotify = require('node-spotify-api');
 //our own keys we've defined
-var spotify = new Spotify(keys.spotify); 
+var spotify = new Spotify(keys.spotify);
 
 var inquirer = require("inquirer");
 var axios = require("axios");
+var moment = require("moment");
 
+//optional packages
+var chalk = require("chalk");
+
+//ask the user to select an option 
 // inquirer.prompt ([
 // {
 //     type: "list", 
@@ -32,6 +37,7 @@ var axios = require("axios");
 //     }
 // })
 
+//type in the title to get more details
 // var movieTitle = process.argv.slice(2).join("+");
 // //var one = 1; 
 // console.log(movieTitle);
@@ -39,14 +45,14 @@ var axios = require("axios");
 // axios.get("http://www.omdbapi.com/?t=" + movieTitle + "&y=&plot=short&apikey=trilogy")
 // .then(function(response) {
 
-//     console.log("Title: " + response.data.Title +
+//     console.log(chalk.green("Title: " + response.data.Title +
 //     "\nYear released: " + response.data.Released + 
 //     "\nIMBD rating: " + response.data.imdbRating +
 //     "\nRotten Tomato rating: " + response.data.Ratings + 
 //     "\nCountry produced: " + response.data.Country + 
 //     "\nLanguage: " + response.data.Language +
 //     "\nPlot: " + response.data.Plot + 
-//     "\nActors: " + response.data.Actors)
+//     "\nActors: " + response.data.Actors))
 //     //"\nRotten Tomato rating: " + response.data.Ratings[one].Value 
 // })
 
@@ -73,15 +79,20 @@ var axios = require("axios");
 
 // "\nRotten Tomato rating: " + response.data.Ratings[1].Value 
 
+//get venue details from artists and bands
 var artist = process.argv.slice(2).join("+");
 console.log(artist);
 
 axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp")
-.then(function(response) {
-//console.log(response);
-console.log(response.data[0].lineup)
-console.log("Venue name: " + response.data[0].venue.name +
-"\nVenue location: " + response.data[0].venue.city + " , " + response.data[0].venue.country +
-"\nVenue date: " + response.data[0].datetime)
+    .then(function (response) {
+        //console.log(response);
 
-})
+        for (var i = 0; i <= 3; i++) {
+
+            console.log(response.data[i].lineup)
+            console.log(chalk.blue("Venue name: " + response.data[i].venue.name +
+                "\nVenue location: " + response.data[i].venue.city + " , " + response.data[i].venue.country +
+                "\nVenue date: " + (chalk.red(moment(response.data[i].datetime).format('L')))))
+
+    }
+    })
