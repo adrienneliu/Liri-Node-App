@@ -2,6 +2,7 @@ require("dotenv").config();
 
 //required packages
 var keys = require("./keys.js");
+console.log(keys.spotify)
 //spotify api in node
 var Spotify = require('node-spotify-api');
 //our own keys we've defined
@@ -36,6 +37,7 @@ var chalk = require("chalk");
 //         console.log("I REFUSE!");
 //     }
 // })
+
 
 //type in the title to get more details
 // var movieTitle = process.argv.slice(2).join("+");
@@ -79,20 +81,52 @@ var chalk = require("chalk");
 
 // "\nRotten Tomato rating: " + response.data.Ratings[1].Value 
 
+
+
 //get venue details from artists and bands
-var artist = process.argv.slice(2).join("+");
-console.log(artist);
+// var artist = process.argv.slice(2).join("+");
+// console.log(artist);
 
-axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp")
-    .then(function (response) {
-        //console.log(response);
+// axios.get("https://rest.bandsintown.com/artists/" + artist + "/events?app_id=codingbootcamp")
+//     .then(function (response) {
+//         //console.log(response);
 
-        for (var i = 0; i <= 3; i++) {
+//         for (var i = 0; i <= 3; i++) {
 
-            console.log(response.data[i].lineup)
-            console.log(chalk.blue("Venue name: " + response.data[i].venue.name +
-                "\nVenue location: " + response.data[i].venue.city + " , " + response.data[i].venue.country +
-                "\nVenue date: " + (chalk.red(moment(response.data[i].datetime).format('L')))))
+//             console.log(response.data[i].lineup)
+//             console.log(chalk.blue("Venue name: " + response.data[i].venue.name +
+//                 "\nVenue location: " + response.data[i].venue.city + " , " + response.data[i].venue.country +
+//                 "\nVenue date: " + (chalk.red(moment(response.data[i].datetime).format('L')))))
 
+//     }
+//     });
+
+
+
+//spotify 
+
+var spotify = new Spotify({
+  id: keys.spotify.id,
+  secret: keys.spotify.secret
+});
+
+spotify.search({ type: 'track', query: "we're finally landing",  limit: 1 }, function(err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
     }
-    })
+    //console.log(data.tracks.items)
+    console.log("Artist Name: " + data.tracks.items[0].artists[0].name)
+    console.log("Song Name: " + data.tracks.items[0].name)
+    console.log("Preview Link: " + data.tracks.items[0].preview_url)
+    console.log("Album: " + data.tracks.items[0].album.name)
+
+    // console.log(data.tracks.items.album.href)
+
+  // console.log("Session: %j", data);
+//   console.log('----A-------'); 
+//   console.log(data.tracks);
+//   console.log('-----B------');
+//   console.log(data.tracks.items);
+//   console.log('-----C------');
+//   console.log(data.tracks.artists);
+  });
