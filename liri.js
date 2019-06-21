@@ -47,6 +47,7 @@ var selectMe = function () {
     }
   });
 }
+
 //run this first
 selectMe();
 
@@ -62,9 +63,12 @@ var moviesOMBD = function () {
     }
   ]).then(function (responseMovie) {
     if (responseMovie.usermovie === "") {
-      console.log("\n-----------------------\n");
-      console.log("If you haven't watched 'Mr. Nobody,' then you should: http://www.imdb.com/title/tt0485947/");
-      console.log("It's on Netflix!\n");
+      console.log("\n-----------------------\n")
+      console.log("If you haven't watched '" + ((chalk.green("Mr. Nobody"))) + ",' then you should: http://www.imdb.com/title/tt0485947/" +
+      "\nIt's on Netflix!\n");
+      console.log("\n-----------------------\n")
+
+      selectMe();
 
     } else {
       if (responseMovie.usermovie) {
@@ -73,20 +77,20 @@ var moviesOMBD = function () {
       axios.get(queryURL)
         .then(function (response) {
 
-          console.log(chalk.magenta("\nTitle: " + response.data.Title +
-            "\nYear released: " + response.data.Released +
-            "\nIMBD rating: " + response.data.imdbRating +
-            "\nRotten Tomato rating: " + response.data.Ratings[0].Value +
-            "\nCountry produced: " + response.data.Country +
-            "\nLanguage: " + response.data.Language +
-            "\nPlot: " + response.data.Plot +
-            "\nActors: " + response.data.Actors + "\n\n"))
-        })
-    }
-    selectMe();
+          console.log((chalk.magenta("\nTitle: ")) + response.data.Title +
+            (chalk.magenta("\nYear released: ")) + response.data.Released +
+            (chalk.magenta("\nIMBD rating: ")) + response.data.imdbRating +
+            (chalk.magenta("\nRotten Tomato rating: ")) + response.data.Ratings[0].Value +
+            (chalk.magenta("\nCountry produced: ")) + response.data.Country +
+            (chalk.magenta("\nLanguage: ")) + response.data.Language +
+            (chalk.magenta("\nPlot: ")) + response.data.Plot +
+            (chalk.magenta("\nActors: ")) + response.data.Actors + "\n\n")
+          selectMe();
+        }
+        )}
 
   })
-}
+};
 
 
 //get venue details from artists and bands
@@ -113,7 +117,7 @@ var bandsinTown = function () {
 
             // console.log(responseResult.data[i].lineup)
             console.log(chalk.blue("\nVenue name: " + response.data[i].venue.name +
-              "\nVenue location: " + response.data[i].venue.city + " , " + response.data[i].venue.country +
+              "\nVenue location: " + response.data[i].venue.city + ", " + response.data[i].venue.country +
               "\nVenue date: "
               + (chalk.red(moment(response.data[i].datetime).format('L')))));
           }
@@ -144,21 +148,21 @@ var spotifyMe = function () {
           (chalk.yellow("\nSong Name: ")) + data.tracks.items[0].name +
           (chalk.yellow("\nPreview Link: ")) + data.tracks.items[0].preview_url +
           (chalk.yellow("\nAlbum: ")) + data.tracks.items[0].album.name + "\n\n")
-
-        }  
-      )}else{
-    spotify.search({ type: 'track', query: "'" + response.usersong + "'", limit: 3 }, function (err, data) {
-      console.log(chalk.yellow("\nArtist Name: ") + data.tracks.items[0].artists[0].name +
-        (chalk.yellow("\nSong Name: ")) + data.tracks.items[0].name +
-        (chalk.yellow("\nSong Name: ")) + data.tracks.items[0].name +
-        (chalk.yellow("\nPreview Link: ")) + data.tracks.items[0].preview_url +
-        (chalk.yellow("\nAlbum: ")) + data.tracks.items[0].album.name + "\n\n"
+        selectMe();
+      }
       )
-
-    })
-  }selectMe();
+    } else {
+      spotify.search({ type: 'track', query: "'" + response.usersong + "'", limit: 3 }, function (err, data) {
+        console.log(chalk.yellow("\nArtist Name: ") + data.tracks.items[0].artists[0].name +
+          (chalk.yellow("\nSong Name: ")) + data.tracks.items[0].name +
+          (chalk.yellow("\nSong Name: ")) + data.tracks.items[0].name +
+          (chalk.yellow("\nPreview Link: ")) + data.tracks.items[0].preview_url +
+          (chalk.yellow("\nAlbum: ")) + data.tracks.items[0].album.name + "\n\n")
+        selectMe();
+      })
+    }//selectMe();
   })
-  
+
 }
 
 
